@@ -7,6 +7,12 @@
 
 ⚡️ Gofast is a HTTP client based on [fasthttp](https://github.com/valyala/fasthttp) with zero memory allocation. 
 
+## Install
+
+```console
+go get -u github.com/cloudingcity/gofast
+```
+
 ## Quick Start
 
 ```go
@@ -41,10 +47,4 @@ func main() {
 ```console
 $ go test -bench=. -benchmem -benchtime=3s -run=none -cpu 4
 BenchmarkClient-4    1000000    3220 ns/op    0 B/op    0 allocs/op
-```
-
-## Install
-
-```console
-go get -u github.com/cloudingcity/gofast
 ```
