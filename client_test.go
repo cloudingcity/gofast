@@ -2,6 +2,8 @@ package gofast
 
 import (
 	"errors"
+	"io/ioutil"
+	"log"
 	"net"
 	"testing"
 
@@ -76,6 +78,8 @@ func TestClient_Post(t *testing.T) {
 	})
 
 	t.Run("response decode fail", func(t *testing.T) {
+		log.SetOutput(ioutil.Discard)
+
 		c := New()
 		c.fastClient = mockFastHTTPClient(func(ctx *fasthttp.RequestCtx) {
 			ctx.SetBodyString("wrong format")
@@ -114,7 +118,6 @@ func BenchmarkClient(b *testing.B) {
 	c := New()
 	c.fastClient = mockFastHTTPClient(func(ctx *fasthttp.RequestCtx) {
 		ctx.SetBodyString(`{"hello": "world"}`)
-
 	})
 
 	b.ReportAllocs()
