@@ -1,0 +1,21 @@
+run:
+  deadline: 5m
+  linters:
+    disable-all: true
+    enable:
+      - deadcode
+      - goimports
+      - golint
+      - gosimple
+      - govet
+      - ineffassign
+      - staticcheck
+      - structcheck
+      - typecheck
+      - unused
+      - varcheck
+      - errcheck
+      - unconvert
+      - gocyclo # Computes and checks the cyclomatic complexity of functions
+      - misspell # Finds commonly misspelled English words in comments
+    fast: true
