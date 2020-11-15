@@ -2,7 +2,6 @@ package gofast
 
 import (
 	"fmt"
-	"log"
 
 	"github.com/valyala/fasthttp"
 )
@@ -105,8 +104,6 @@ func (c *Client) do(uri string, method string, in, out interface{}, header Heade
 
 	if out != nil {
 		if err := c.responseDecoder(resp, out); err != nil {
-			log.Printf("code: %v", resp.StatusCode())
-			log.Printf("body: %v", string(resp.Body()))
 			return fmt.Errorf("decode response: %w", err)
 		}
 	}
