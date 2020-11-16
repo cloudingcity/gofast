@@ -8,7 +8,7 @@ const (
 )
 
 type Config struct {
-	// fasthttp fastClient configurations.
+	// fasthttp client configurations.
 	Name                     string
 	NoDefaultUserAgentHeader bool
 	ReadTimeout              time.Duration
