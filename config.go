@@ -8,18 +8,18 @@ const (
 )
 
 type Config struct {
-	// fasthttp client configurations.
+	// fasthttp client configurations
 	Name                     string
 	NoDefaultUserAgentHeader bool
 	ReadTimeout              time.Duration
 	WriteTimeout             time.Duration
 
-	// ErrorHandler handle the status code without 2xx.
+	// ErrorHandler handle the status code without 2xx
 	ErrorHandler ErrorHandler
 
-	// RequestEncoder encode request before send.
+	// RequestEncoder encode request before send
 	RequestEncoder RequestEncoder
 
-	// ResponseDecoder decode response after send.
+	// ResponseDecoder decode response after send
 	ResponseDecoder ResponseDecoder
 }
