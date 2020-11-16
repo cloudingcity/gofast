@@ -16,30 +16,7 @@ type Client struct {
 }
 
 func New(config ...Config) *Client {
-	var cfg Config
-
-	if len(config) > 0 {
-		cfg = config[0]
-	}
-
-	if cfg.Name == "" {
-		cfg.Name = defaultUserAgent
-	}
-	if cfg.ReadTimeout == 0 {
-		cfg.ReadTimeout = defaultTimeout
-	}
-	if cfg.WriteTimeout == 0 {
-		cfg.WriteTimeout = defaultTimeout
-	}
-	if cfg.RequestEncoder == nil {
-		cfg.RequestEncoder = jsonRequestEncoder
-	}
-	if cfg.ResponseDecoder == nil {
-		cfg.ResponseDecoder = jsonResponseDecoder
-	}
-	if cfg.ErrorHandler == nil {
-		cfg.ErrorHandler = defaultErrorHandler
-	}
+	cfg := configDefault(config...)
 
 	return &Client{
 		fastClient: &fasthttp.Client{

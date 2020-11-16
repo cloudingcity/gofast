@@ -2,11 +2,6 @@ package gofast
 
 import "time"
 
-const (
-	defaultUserAgent = "gofast"
-	defaultTimeout   = 6 * time.Second
-)
-
 type Config struct {
 	// fasthttp client configurations
 	Name                     string
@@ -22,4 +17,43 @@ type Config struct {
 
 	// ResponseDecoder decode response after send
 	ResponseDecoder ResponseDecoder
+}
+
+// ConfigDefault is the default config
+var ConfigDefault = Config{
+	Name:                     "gofast",
+	NoDefaultUserAgentHeader: false,
+	ReadTimeout:              6 * time.Second,
+	WriteTimeout:             6 * time.Second,
+	ErrorHandler:             defaultErrorHandler,
+	RequestEncoder:           jsonRequestEncoder,
+	ResponseDecoder:          jsonResponseDecoder,
+}
+
+func configDefault(config ...Config) Config {
+	if len(config) < 1 {
+		return ConfigDefault
+	}
+
+	cfg := config[0]
+
+	if cfg.Name == "" {
+		cfg.Name = ConfigDefault.Name
+	}
+	if cfg.ReadTimeout == 0 {
+		cfg.ReadTimeout = ConfigDefault.ReadTimeout
+	}
+	if cfg.WriteTimeout == 0 {
+		cfg.WriteTimeout = ConfigDefault.WriteTimeout
+	}
+	if cfg.RequestEncoder == nil {
+		cfg.RequestEncoder = ConfigDefault.RequestEncoder
+	}
+	if cfg.ResponseDecoder == nil {
+		cfg.ResponseDecoder = ConfigDefault.ResponseDecoder
+	}
+	if cfg.ErrorHandler == nil {
+		cfg.ErrorHandler = ConfigDefault.ErrorHandler
+	}
+	return cfg
 }
