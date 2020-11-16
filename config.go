@@ -9,14 +9,14 @@ type Config struct {
 	ReadTimeout              time.Duration
 	WriteTimeout             time.Duration
 
-	// ErrorHandler handle the status code without 2xx
-	ErrorHandler ErrorHandler
-
 	// RequestEncoder encode request before send
 	RequestEncoder RequestEncoder
 
 	// ResponseDecoder decode response after send
 	ResponseDecoder ResponseDecoder
+
+	// ErrorHandler handle the status code without 2xx
+	ErrorHandler ErrorHandler
 }
 
 // ConfigDefault is the default config
@@ -25,9 +25,9 @@ var ConfigDefault = Config{
 	NoDefaultUserAgentHeader: false,
 	ReadTimeout:              6 * time.Second,
 	WriteTimeout:             6 * time.Second,
-	ErrorHandler:             defaultErrorHandler,
 	RequestEncoder:           jsonRequestEncoder,
 	ResponseDecoder:          jsonResponseDecoder,
+	ErrorHandler:             defaultErrorHandler,
 }
 
 func configDefault(config ...Config) Config {
