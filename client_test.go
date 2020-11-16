@@ -1,7 +1,6 @@
 package gofast
 
 import (
-	"errors"
 	"io/ioutil"
 	"log"
 	"net"
@@ -28,20 +27,16 @@ func TestClient_Get(t *testing.T) {
 		assert.Equal(t, "bar", out.Foo)
 	})
 
-	t.Run("customize error handle when status code not 2xx", func(t *testing.T) {
-		cfg := Config{
-			ErrorHandler: func(resp *fasthttp.Response) error {
-				return errors.New("something wrong")
-			},
-		}
-		c := New(cfg)
+	t.Run("error handle when status code not 2xx", func(t *testing.T) {
+		c := New()
 		c.fastClient = mockFastHTTPClient(func(ctx *fasthttp.RequestCtx) {
 			ctx.SetStatusCode(fasthttp.StatusInternalServerError)
+			ctx.SetBodyString("something wrong")
 		})
 
 		err := c.Get(testURL, nil, nil)
 		assert.Error(t, err)
-		assert.Equal(t, "something wrong", err.Error())
+		assert.Equal(t, "code: 500, body: something wrong", err.Error())
 	})
 
 	t.Run("get with header", func(t *testing.T) {
