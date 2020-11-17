@@ -107,7 +107,7 @@ cfg := gofast.Config{
 
 fast := gofast.New(cfg)
 err := fast.Get(uri, nil, nil)
-// code = 400
+// http code = 400
 ```
 
 ## Benchmarks
