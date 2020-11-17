@@ -69,7 +69,7 @@ body := CreateToken{
     Secret: "my-secret",
 }
 var token Token
-if err := fast.Post(uri, body, &token, nil); err != nil {
+if err := fast.Post(uri, &body, &token, nil); err != nil {
     log.Fatalln(err)
 }
 fmt.Printf("token: %v, expired_at: %v", token.Token, token.ExpiredAt)
