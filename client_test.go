@@ -109,7 +109,7 @@ func TestClient_Delete(t *testing.T) {
 	assert.NoError(t, err)
 }
 
-func BenchmarkClient(b *testing.B) {
+func BenchmarkPostJSON(b *testing.B) {
 	c := New()
 	c.fastClient = mockFastHTTPClient(func(ctx *fasthttp.RequestCtx) {
 		ctx.SetBodyString(`{"hello": "world"}`)
@@ -122,6 +122,29 @@ func BenchmarkClient(b *testing.B) {
 		}
 		for pb.Next() {
 			err := c.Post(testURL, &in, nil, Header{"foo": "bar"})
+			if err != nil {
+				b.Fatalf("unexpected error: %s", err)
+			}
+		}
+	})
+}
+
+func BenchmarkPostURLEncode(b *testing.B) {
+	c := New(Config{
+		RequestEncoder:  URLEncoder,
+		ResponseDecoder: TextDecoder,
+	})
+	c.fastClient = mockFastHTTPClient(func(ctx *fasthttp.RequestCtx) {
+		ctx.SetBodyString(`{"hello": "world"}`)
+	})
+
+	b.ReportAllocs()
+	b.RunParallel(func(pb *testing.PB) {
+		in := map[string]string{
+			"foo": "bar",
+		}
+		for pb.Next() {
+			err := c.Post(testURL, in, nil, Header{"foo": "bar"})
 			if err != nil {
 				b.Fatalf("unexpected error: %s", err)
 			}

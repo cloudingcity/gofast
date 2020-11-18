@@ -23,3 +23,23 @@ var JSONDecoder = func(resp *fasthttp.Response, out interface{}) error {
 	}
 	return nil
 }
+
+var URLEncoder = func(req *fasthttp.Request, in interface{}) error {
+	args := fasthttp.AcquireArgs()
+	defer fasthttp.ReleaseArgs(args)
+
+	for k, v := range in.(map[string]string) {
+		args.Set(k, v)
+	}
+	if _, err := args.WriteTo(req.BodyWriter()); err != nil {
+		return err
+	}
+	req.Header.SetContentType("application/x-www-form-urlencoded")
+	return nil
+}
+
+var TextDecoder = func(resp *fasthttp.Response, out interface{}) error {
+	s := out.(*string)
+	*s = string(resp.Body())
+	return nil
+}
