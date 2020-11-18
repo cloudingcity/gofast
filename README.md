@@ -50,6 +50,9 @@ func main() {
 
 ### Send request with body
 
+The default encoding is `JSON` with `application/json` header.
+
+You can also use `map` to bind value, but the worst performance you will get. 
 ```go
 type CreateToken struct {
     ID     string `json:"id"`
@@ -94,9 +97,30 @@ if err := fast.Get(uri, &user, h); err != nil {
 fmt.Printf("id: %v, name: %v", user.ID, user.Name)
 ```
 
+### URL encode
+
+Post body with `application/x-www-form-urlencoded` header and get text.
+
+```go
+fast := gofast.New(gofast.Config{
+    RequestEncoder:  gofast.URLEncoder,
+    ResponseDecoder: gofast.TextDecoder,
+})
+
+uri := "https://example.com/api/v1/token"
+body := map[string]string{
+    "id":     "my-id",
+    "secret": "my-secret",
+}
+var token string
+if err := fast.Post(uri, body, &token, nil); err != nil {
+    log.Fatalln(err)
+}
+```
+
 ### Customize error handler
 
-Error handler will handle non 200 HTTP status code.
+Error handler will handle non 2xx HTTP status code.
 
 ```go
 cfg := gofast.Config{
@@ -114,5 +138,6 @@ err := fast.Get(uri, nil, nil)
 
 ```console
 $ go test -bench=. -benchmem -benchtime=3s -run=none -cpu 4
-BenchmarkClient-4    1000000    3220 ns/op    0 B/op    0 allocs/op
+BenchmarkPostJSON-4               1263522              2891 ns/op               0 B/op          0 allocs/op
+BenchmarkPostURLEncode-4          1219441              2777 ns/op               0 B/op          0 allocs/op
 ```
