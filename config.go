@@ -25,8 +25,8 @@ var ConfigDefault = Config{
 	NoDefaultUserAgentHeader: false,
 	ReadTimeout:              6 * time.Second,
 	WriteTimeout:             6 * time.Second,
-	RequestEncoder:           jsonRequestEncoder,
-	ResponseDecoder:          jsonResponseDecoder,
+	RequestEncoder:           JSONEncoder,
+	ResponseDecoder:          JSONDecoder,
 	ErrorHandler:             defaultErrorHandler,
 }
 
