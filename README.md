@@ -52,7 +52,7 @@ func main() {
 
 The default encoding is `JSON` with `application/json` header.
 
-You can also use `map` to bind value, but the worst performance you will get. 
+You can also use `map` to bind value, but the worse performance you will get. 
 ```go
 type CreateToken struct {
     ID     string `json:"id"`
