@@ -57,7 +57,7 @@ func TestClient_Post(t *testing.T) {
 			assert.JSONEq(t, `{"foo":"bar"}`, string(ctx.Request.Body()))
 		})
 
-		in := map[string]string{"foo": "bar"}
+		in := Body{"foo": "bar"}
 		err := c.Post(testURL, &in, nil, nil)
 		assert.NoError(t, err)
 	})
@@ -140,7 +140,7 @@ func BenchmarkPostURLEncode(b *testing.B) {
 
 	b.ReportAllocs()
 	b.RunParallel(func(pb *testing.PB) {
-		in := map[string]string{
+		in := Body{
 			"foo": "bar",
 		}
 		for pb.Next() {

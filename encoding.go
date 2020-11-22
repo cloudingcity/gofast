@@ -28,7 +28,7 @@ var URLEncoder = func(req *fasthttp.Request, in interface{}) error {
 	args := fasthttp.AcquireArgs()
 	defer fasthttp.ReleaseArgs(args)
 
-	for k, v := range in.(map[string]string) {
+	for k, v := range in.(Body) {
 		args.Set(k, v)
 	}
 	if _, err := args.WriteTo(req.BodyWriter()); err != nil {

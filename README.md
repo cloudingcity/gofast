@@ -108,7 +108,7 @@ fast := gofast.New(gofast.Config{
 })
 
 uri := "https://example.com/api/v1/token"
-body := map[string]string{
+body := gofast.Body{
     "id":     "my-id",
     "secret": "my-secret",
 }

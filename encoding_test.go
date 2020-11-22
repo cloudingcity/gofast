@@ -35,7 +35,7 @@ func TestEncoding_JSON(t *testing.T) {
 func TestEncoding_URL(t *testing.T) {
 	t.Run("encode", func(t *testing.T) {
 		req := fasthttp.AcquireRequest()
-		in := map[string]string{
+		in := Body{
 			"foo": "bar",
 		}
 		err := URLEncoder(req, in)
