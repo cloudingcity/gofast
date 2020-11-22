@@ -54,8 +54,7 @@ func (c *Client) Delete(uri string, in, out interface{}, header Header) error {
 }
 
 func (c *Client) do(uri string, method string, in, out interface{}, header Header) error {
-	req := fasthttp.AcquireRequest()
-	resp := fasthttp.AcquireResponse()
+	req, resp := fasthttp.AcquireRequest(), fasthttp.AcquireResponse()
 	defer func() {
 		fasthttp.ReleaseRequest(req)
 		fasthttp.ReleaseResponse(resp)
