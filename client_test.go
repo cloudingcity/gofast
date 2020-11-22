@@ -15,9 +15,11 @@ const testURL = "http://example.com/"
 
 func TestClient_Get(t *testing.T) {
 	t.Run("200", func(t *testing.T) {
+		ch := make(chan string, 1)
+
 		c := New()
 		c.fastClient = mockFastHTTPClient(func(ctx *fasthttp.RequestCtx) {
-			assert.Equal(t, testURL, ctx.Request.URI().String())
+			ch <- ctx.Request.URI().String()
 			ctx.SetBodyString(`{"foo":"bar"}`)
 		})
 
@@ -25,6 +27,7 @@ func TestClient_Get(t *testing.T) {
 		err := c.Get(testURL, &out, nil)
 		assert.NoError(t, err)
 		assert.Equal(t, "bar", out.Foo)
+		assert.Equal(t, testURL, <-ch)
 	})
 
 	t.Run("error handle when status code not 2xx", func(t *testing.T) {
@@ -40,26 +43,32 @@ func TestClient_Get(t *testing.T) {
 	})
 
 	t.Run("get with header", func(t *testing.T) {
+		ch := make(chan string, 1)
+
 		c := New()
 		c.fastClient = mockFastHTTPClient(func(ctx *fasthttp.RequestCtx) {
-			assert.Equal(t, "bar", string(ctx.Request.Header.Peek("foo")))
+			ch <- string(ctx.Request.Header.Peek("foo"))
 		})
 
 		err := c.Get(testURL, nil, Header{"foo": "bar"})
 		assert.NoError(t, err)
+		assert.Equal(t, "bar", <-ch)
 	})
 }
 
 func TestClient_Post(t *testing.T) {
 	t.Run("success", func(t *testing.T) {
+		ch := make(chan string, 1)
+
 		c := New()
 		c.fastClient = mockFastHTTPClient(func(ctx *fasthttp.RequestCtx) {
-			assert.JSONEq(t, `{"foo":"bar"}`, string(ctx.Request.Body()))
+			ch <- string(ctx.Request.Body())
 		})
 
 		in := Body{"foo": "bar"}
 		err := c.Post(testURL, &in, nil, nil)
 		assert.NoError(t, err)
+		assert.JSONEq(t, `{"foo":"bar"}`, <-ch)
 	})
 
 	t.Run("request encode fail", func(t *testing.T) {
